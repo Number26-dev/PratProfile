@@ -154,6 +154,42 @@ main { position: relative; z-index: 1; }
 .footer-year, .back-top { color: #8099a4; }
 :focus-visible { outline-color: var(--green); }
 
+.interest-card { display: block; position: relative; color: inherit; text-decoration: none; transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+.hire-button { font-weight: 800; letter-spacing: .025em; box-shadow: 0 8px 24px #66e0c033, inset 0 1px 0 #ffffffaa; }
+.hire-button:hover { transform: translateY(-3px); box-shadow: 0 13px 30px #66e0c04a, inset 0 1px 0 #ffffffaa; }
+.interest-card:hover { transform: translateY(-6px); border-color: #66e0c077; box-shadow: 0 20px 44px #0006, inset 0 1px 0 #d8fff11c; }
+.interest-card:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+.subject-page { width: min(1040px, calc(100% - 48px)); margin: 0 auto; padding: clamp(48px, 8vw, 104px) 0 90px; position: relative; z-index: 1; }
+.subject-back { display: inline-flex; align-items: center; gap: 10px; color: var(--green); font: 600 .78rem var(--mono); text-decoration: none; margin-bottom: 30px; }
+.subject-back:hover { color: var(--lime); }
+.subject-hero, .subject-section { border: 1px solid #a7e9dd29; border-radius: 20px; background: #091923c7; box-shadow: inset 0 1px 0 #ecfff012, 0 18px 42px #0003; -webkit-backdrop-filter: blur(18px) saturate(125%); backdrop-filter: blur(18px) saturate(125%); }
+.subject-hero { padding: clamp(28px, 6vw, 64px); margin-bottom: clamp(28px, 5vw, 56px); }
+.subject-hero h1 { margin: 0; color: #e8f3f3; font: 700 clamp(3rem, 8vw, 6.5rem)/.98 var(--display); letter-spacing: -.075em; }
+.subject-hero h1 span { color: var(--green); }
+.subject-lede { max-width: 680px; margin: 22px 0 0; color: #a7bcc3; font-size: clamp(1rem, 2vw, 1.16rem); line-height: 1.8; }
+.subject-equation { display: inline-block; margin-top: 28px; padding: 12px 16px; border: 1px solid #66e0c03a; border-radius: 10px; background: #06131d9c; color: #b7f4e6; font: 600 clamp(1rem, 3vw, 1.45rem) var(--mono); }
+.subject-symbol { display: flex; align-items: center; gap: 14px; margin: 0 0 24px; color: var(--green); }
+.subject-symbol-mark { display: grid; width: clamp(56px, 9vw, 84px); height: clamp(56px, 9vw, 84px); place-items: center; border: 1px solid #66e0c044; border-radius: 18px; background: #66e0c014; color: #b7f4e6; font: 600 clamp(2rem, 5vw, 3.6rem)/1 var(--mono); box-shadow: inset 0 1px 0 #fff1, 0 12px 32px #0003; }
+.subject-symbol-label { font: 600 .68rem var(--mono); letter-spacing: .12em; color: #8ca9a9; }
+.subject-sections { display: grid; gap: 20px; }
+.subject-section { padding: clamp(25px, 4.5vw, 44px); }
+.subject-section .eyebrow { margin-bottom: 13px; }
+.subject-section h2 { max-width: 780px; margin: 0 0 16px; color: #e8f3f3; font: 600 clamp(1.55rem, 4vw, 2.55rem)/1.15 var(--display); letter-spacing: -.045em; }
+.subject-section p { max-width: 780px; margin: 0; color: #a7bcc3; font-size: 1rem; line-height: 1.85; }
+.subject-section p + p { margin-top: 13px; }
+.subject-section ol { display: grid; gap: 12px; margin: 20px 0 0; padding: 0; list-style: none; counter-reset: result; }
+.subject-section ol li { counter-increment: result; display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; padding: 16px 18px; border: 1px solid #d3b45d9c; border-radius: 12px; background: linear-gradient(115deg, #1b3556e8, #554829a6); box-shadow: inset 0 1px 0 #ffffff12, 0 10px 26px #0004; color: #f0e5c6; font-size: 1rem; font-weight: 750; line-height: 1.7; }
+.subject-section ol li::before { content: "(" counter(result) ")"; color: #f0d27d; font: 700 .82rem var(--mono); padding-top: 3px; }
+.subject-results-lead { margin-top: 20px !important; color: #e6f0f2 !important; font-weight: 700; }
+.subject-chapter-note { margin-top: 16px !important; color: #78909b !important; font: .78rem/1.6 var(--mono) !important; }
+.subject-page-footer { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 34px; padding: 22px 4px; border-top: 1px solid var(--line); color: #91a7b1; }
+.subject-page-footer .brand { color: var(--ink); }
+.subject-transition-overlay { position: fixed; z-index: 9999; inset: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 10px; padding: clamp(32px, 9vw, 110px); overflow: hidden; color: #e8f3f3; background: radial-gradient(ellipse at 20% 25%, #0a4b43, transparent 50%), linear-gradient(135deg, #07131d, #0e242d 62%, #101828); transition: clip-path .7s cubic-bezier(.18,.82,.24,1); pointer-events: none; }
+.subject-transition-mark { color: #b7f4e6; font: 600 clamp(4rem, 11vw, 9rem)/1 var(--mono); text-shadow: 0 0 36px #57e3c366; }
+.subject-transition-label { margin-top: 20px; color: #82baad; font: 600 .7rem var(--mono); letter-spacing: .18em; }
+.subject-transition-title { color: #e8f3f3; font: 700 clamp(2.5rem, 8vw, 6rem)/1 var(--display); letter-spacing: -.07em; }
+@media (max-width: 600px) { .subject-page { width: min(100% - 32px, 1040px); padding-top: 38px; } .subject-hero, .subject-section { border-radius: 15px; } .subject-page-footer { align-items: flex-start; flex-direction: column; } }
+
 .hero-copy,
 .about-layout > div:first-child,
 .about-copy,
@@ -197,7 +233,10 @@ main { position: relative; z-index: 1; }
 .step h3, .step p { width: auto; max-width: 100%; }
 .highlight-panel > div:first-child { min-width: 0; }
 .highlight-panel h2, .highlight-panel p { width: auto; max-width: 100%; }
-.highlight-item { border-radius: 9px; padding: 16px 10px; }
+.highlight-item { border: 1px solid #d3b45d9c; border-radius: 12px; padding: 17px 16px; background: linear-gradient(115deg, #1b3556e8, #554829a6); box-shadow: inset 0 1px 0 #ffffff12, 0 10px 26px #0004; }
+.highlight-item strong { font-weight: 800; color: #f4e7bd; }
+.highlight-item div span { font-weight: 700; color: #d0d8dc; }
+.highlight-icon, .highlight-count { color: #f0d27d; }
 .highlight-item strong, .highlight-item div span { width: auto; }
 .section-index { width: fit-content; padding: 10px 14px; border: 1px solid #a7e9dd29; border-radius: 8px; background: #091923a8; -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
 .eyebrow, .card-number, .project-chip, .step-number, .step-symbol, .highlight-count, .footer-year { padding: 0; border: 0; background: none; box-shadow: none; backdrop-filter: none; }

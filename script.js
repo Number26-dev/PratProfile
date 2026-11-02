@@ -90,3 +90,28 @@ if (scienceWall && scienceItems.length && pageSections.length && !prefersReduced
   window.addEventListener('resize', scheduleScienceReposition);
   scheduleScienceReposition();
 }
+
+document.querySelectorAll('.interest-card[href^="subjects/"]').forEach((card) => {
+  card.addEventListener('click', (event) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || prefersReducedMotion || !CSS.supports('clip-path: inset(0)')) return;
+    event.preventDefault();
+
+    const bounds = card.getBoundingClientRect();
+    const radius = getComputedStyle(card).borderRadius;
+    const subjectName = card.querySelector('h3')?.textContent?.trim() || 'Subject';
+    const symbol = card.querySelector('.interest-illustration > span')?.textContent?.trim() || '✳';
+    const overlay = document.createElement('div');
+    overlay.className = 'subject-transition-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML = `<span class="subject-transition-mark">${symbol}</span><span class="subject-transition-label">OPENING FIELD NOTES</span><span class="subject-transition-title">${subjectName}</span>`;
+    overlay.style.clipPath = `inset(${bounds.top}px ${innerWidth - bounds.right}px ${innerHeight - bounds.bottom}px ${bounds.left}px round ${radius})`;
+    document.body.append(overlay);
+    overlay.getBoundingClientRect();
+
+    requestAnimationFrame(() => {
+      overlay.style.clipPath = 'inset(0 0 0 0 round 0px)';
+    });
+
+    window.setTimeout(() => window.location.assign(card.href), 720);
+  });
+});
