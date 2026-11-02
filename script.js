@@ -1,6 +1,23 @@
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
 
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+  contactForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const formData = new FormData(contactForm);
+    const name = String(formData.get('name') || '').trim();
+    const email = String(formData.get('email') || '').trim();
+    const message = String(formData.get('message') || '').trim();
+    const recipient = 'prateek.r.bijju@gmail.com';
+    const subject = `Website message from ${name}`;
+    const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(recipient)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    window.open(gmailUrl, '_blank', 'noopener,noreferrer');
+  });
+}
+
 const revealSections = document.querySelectorAll('.section');
 if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   revealSections.forEach((section) => section.classList.add('reveal'));
