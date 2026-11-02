@@ -39,6 +39,27 @@ const scienceItems = scienceWall
 const pageSections = [...document.querySelectorAll('main > section')];
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+if (!prefersReducedMotion) {
+  let glassFrame = null;
+  const updateGlassLight = () => {
+    glassFrame = null;
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+    const wave = Math.sin(progress * Math.PI * 2);
+    const root = document.documentElement;
+    root.style.setProperty('--glass-light-x', `${18 + progress * 64}%`);
+    root.style.setProperty('--glass-light-y', `${18 + (wave + 1) * 30}%`);
+    root.style.setProperty('--glass-drift-x', `${wave * 24}px`);
+    root.style.setProperty('--glass-drift-y', `${-progress * 92}px`);
+  };
+  const scheduleGlassLight = () => {
+    if (glassFrame === null) glassFrame = requestAnimationFrame(updateGlassLight);
+  };
+  window.addEventListener('scroll', scheduleGlassLight, { passive: true });
+  window.addEventListener('resize', scheduleGlassLight);
+  updateGlassLight();
+}
+
 if (scienceWall && scienceItems.length && pageSections.length && !prefersReducedMotion) {
   const startingPoints = scienceItems.map((_, index) => ({
     x: 4 + ((index * 23) % 84),
@@ -115,3 +136,57 @@ document.querySelectorAll('.interest-card[href^="subjects/"]').forEach((card) =>
     window.setTimeout(() => window.location.assign(card.href), 720);
   });
 });
+
+const arrivalTimers = new WeakMap();
+const bringSectionIntoView = (target, { updateHash = false } = {}) => {
+  if (!target) return;
+  if (target.id === 'home' || target.id === 'top') {
+    if (updateHash && target.id) history.pushState(null, '', `#${target.id}`);
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    return;
+  }
+
+  const section = target.matches('.section') ? target : target.closest('.section');
+  const isFormControl = target.matches('input, textarea, select, button');
+  const heading = section?.querySelector('h1, h2');
+  const visualTarget = isFormControl ? target : target.matches('.section') && heading ? heading : target;
+  if (updateHash && target.id) history.pushState(null, '', `#${target.id}`);
+  if (section) {
+    const oldTimer = arrivalTimers.get(section);
+    if (oldTimer) window.clearTimeout(oldTimer);
+    section.classList.remove('section-arrival');
+    void section.offsetWidth;
+    section.classList.add('section-arrival');
+    arrivalTimers.set(section, window.setTimeout(() => {
+      section.classList.remove('section-arrival');
+      arrivalTimers.delete(section);
+    }, 2100));
+  }
+  if (visualTarget.matches('h1, h2')) {
+    visualTarget.classList.remove('heading-arrival');
+    void visualTarget.offsetWidth;
+    visualTarget.classList.add('heading-arrival');
+    window.setTimeout(() => visualTarget.classList.remove('heading-arrival'), 2100);
+  }
+  visualTarget.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'center', inline: 'nearest' });
+};
+
+document.addEventListener('click', (event) => {
+  const link = event.target.closest('a[href*="#"]');
+  if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target === '_blank' || link.hasAttribute('download')) return;
+  const url = new URL(link.href, window.location.href);
+  if (url.origin !== window.location.origin || url.pathname !== window.location.pathname || !url.hash) return;
+  const target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+  if (!target) return;
+  event.preventDefault();
+  bringSectionIntoView(target, { updateHash: true });
+});
+
+const bringHashTargetIntoView = () => {
+  if (!window.location.hash) return;
+  const target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+  if (target) bringSectionIntoView(target);
+};
+window.addEventListener('popstate', bringHashTargetIntoView);
+window.addEventListener('hashchange', bringHashTargetIntoView);
+if (window.location.hash) window.setTimeout(bringHashTargetIntoView, 90);
